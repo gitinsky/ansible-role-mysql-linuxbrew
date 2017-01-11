@@ -1,0 +1,15 @@
+- name: create a user for MySQL and Linuxbrew
+  user: name=mysql-linuxbrew state=present
+
+- name: checkout Linuxbrew
+  become: yes
+  become_user: mysql-linuxbrew
+  git: repo=https://github.com/Linuxbrew/brew.git dest=/home/mysql-linuxbrew/.linuxbrew
+
+- name: install libncurses5-dev
+  apt: name=libncurses5-dev state=present
+
+- name: install mysql5.5
+  become: yes
+  become_user: mysql-linuxbrew
+  shell: bash -c 'PATH="$HOME/.linuxbrew/bin:$PATH" brew install mysql@5.5'
